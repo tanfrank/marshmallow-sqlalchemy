@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import marshmallow as ma
+from marshmallow import utils
 from marshmallow.compat import with_metaclass, iteritems
 
 from .convert import ModelConverter
@@ -203,6 +204,6 @@ class ModelSchema(with_metaclass(ModelSchemaMeta, ma.Schema)):
             Changed position of ``obj`` and ``attr``.
         """
         try:
-            return ma.utils.get_value(obj, attr, default)
+            return utils.get_value(obj, attr, default)
         except InvalidRequestError:
             return default
