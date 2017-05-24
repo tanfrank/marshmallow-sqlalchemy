@@ -203,6 +203,6 @@ class ModelSchema(with_metaclass(ModelSchemaMeta, ma.Schema)):
             Changed position of ``obj`` and ``attr``.
         """
         try:
-            return utils.get_value(obj, attr, default)
+            return ma.utils.get_value(obj, attr, default)
         except InvalidRequestError:
             return default
