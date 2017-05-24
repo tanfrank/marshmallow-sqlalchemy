@@ -5,6 +5,8 @@ from marshmallow.compat import with_metaclass, iteritems
 from .convert import ModelConverter
 from .fields import get_primary_keys
 
+from sqlalchemy.exc import InvalidRequestError
+
 
 class TableSchemaOpts(ma.SchemaOpts):
     """Options class for `TableSchema`.
@@ -192,3 +194,15 @@ class ModelSchema(with_metaclass(ModelSchemaMeta, ma.Schema)):
         if not self.session:
             raise ValueError('Validation requires a session')
         return super(ModelSchema, self).validate(data, *args, **kwargs)
+
+
+    def get_attribute(self, obj, attr, default):
+        """Defines how to pull values from an object to serialize.
+        .. versionadded:: 2.0.0
+        .. versionchanged:: 3.0.0a1
+            Changed position of ``obj`` and ``attr``.
+        """
+        try:
+            return utils.get_value(obj, attr, default)
+        except InvalidRequestError:
+            return default
